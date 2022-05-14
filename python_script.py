@@ -31,6 +31,9 @@ MKTP1_COUNTRY_COL      = 2
 MKTP1_PRODUCT_CODE_COL = 3
 MKTP1_SALES_COL        = 10
 MKTP1_DATE_COL         = 1
+
+#TODO: Map Marketplace 2 columns below. You only need to map the columns that you are copying.
+
  
 # Put code your in the function, called 'main()', below
 def main():
@@ -53,6 +56,8 @@ def main():
   marketplace1 = open(marketplace1_path)
   # A variable (object) which points to the rows in the .csv file
   marketplace1_reader = csv.reader(marketplace1)
+  # As we're reading Marketplace 1 file row by row, we want to skip the first row as it contains column headers. We don't want to read the headers.
+  marketplace1_reader.__next__()
 
   # This for-loop will go through the .csv file line by line. The variable `row` used in the for-loop, contains all the data for a single row at a time.
   # The data type for the variable `row` is a List.
@@ -65,9 +70,10 @@ def main():
   
     # # # # # CHECK THE FOLLOWING CONDITION(S) BEFORE PROCEEDING TO COPY OVER DATA # # # # #
 
-    # Only copy data if Marketplace 1 status column is 'Closed'. Therefore, if it's anything other than 'Closed', then execute the code in this if statement.
-    if row_cleaned[MKTP1_STATUS_COL] != 'Closed':
-      # `continue` means to stop this iteration of the for-loop and start the next iteration immediately. The code below `continue`` will not be executed for this iteration.
+    # Only copy data if Marketplace 1 status column is 'Closed'. Therefore, if it's 'Cancelled' or 'Incident Open', then execute the code in this if statement.
+    if row_cleaned[MKTP1_STATUS_COL] == 'Cancelled' or row_cleaned[MKTP1_STATUS_COL] == 'Incident Open':
+      # `continue` means to stop this iteration of the for-loop and start the next iteration immediately. The code below `continue` will not be executed for this iteration.
+      # We will skip to the next line in Marketplace 1
       continue
 
     # # # # # START COPYING OVER DATA # # # # #
